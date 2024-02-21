@@ -1,7 +1,8 @@
-package com.herald.currencyapp
+package com.herald.currencyapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.herald.currencyapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
