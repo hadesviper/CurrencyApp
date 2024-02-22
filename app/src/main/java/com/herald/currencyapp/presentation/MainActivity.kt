@@ -1,7 +1,7 @@
 package com.herald.currencyapp.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.herald.currencyapp.R
 
 class MainActivity : AppCompatActivity() {

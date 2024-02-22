@@ -41,6 +41,9 @@ android {
         jvmTarget = "17"
     }
 }
+kapt {
+    correctErrorTypes = true
+}
 
 dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
@@ -56,10 +59,9 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
-    implementation ("com.google.dagger:hilt-android:2.48")
-    kapt ("com.google.dagger:hilt-compiler:2.50")
+    implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.47")
-    kapt("androidx.hilt:hilt-compiler:1.1.0")
+
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

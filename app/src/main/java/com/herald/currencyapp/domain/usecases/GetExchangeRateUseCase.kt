@@ -1,23 +1,29 @@
 package com.herald.currencyapp.domain.usecases
 
-import com.herald.currencyapp.common.Constants
 import com.herald.currencyapp.common.Resources
-import com.herald.currencyapp.domain.models.AllCurrencies
+import com.herald.currencyapp.domain.models.CurrencyExchange
 import com.herald.currencyapp.domain.repository.RetroRepo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
-class GetAllCurrenciesUseCase @Inject constructor(
+class GetExchangeRateUseCase @Inject constructor(
     private val retroRepo: RetroRepo
 ) {
-
-    operator fun invoke(): Flow<Resources<AllCurrencies>> = flow {
+    operator fun invoke(
+        date: String = SimpleDateFormat(
+            "yyyy-MM-dd",
+            Locale.US
+        ).format(Calendar.getInstance().time), from: String, to: String
+    ): Flow<Resources<CurrencyExchange>> = flow {
         try {
             emit(Resources.Loading())
-            val data = retroRepo.getAllCurrencies()
+            val data = retroRepo.getExchangeRate(date = date, from = from, to = to)
             emit(Resources.Success(data))
         } catch (e: HttpException) {
             emit(Resources.Error(message = e.message.toString()))
