@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentConversion">
+    <fragment
+        android:id="@+id/fragmentConversion"
+        android:name="com.herald.currencyapp.presentation.fragments.FragmentConversion"
+        android:label="Conversion"
+        tools:layout="@layout/fragment_conversion">
+        <action
+            android:id="@+id/action_fragmentConversion_to_fragmentDetails"
+            app:destination="@id/fragmentDetails"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentDetails"
+        android:name="com.herald.currencyapp.presentation.fragments.FragmentDetails"
+        android:label="Currency Details"
+        tools:layout="@layout/fragment_details">
+        <argument android:name="from"
+            app:argType="string" />
+        <argument android:name="to"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

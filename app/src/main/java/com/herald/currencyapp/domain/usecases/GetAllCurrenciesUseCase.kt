@@ -1,6 +1,5 @@
 package com.herald.currencyapp.domain.usecases
 
-import com.herald.currencyapp.common.Constants
 import com.herald.currencyapp.common.Resources
 import com.herald.currencyapp.domain.models.AllCurrencies
 import com.herald.currencyapp.domain.repository.RetroRepo

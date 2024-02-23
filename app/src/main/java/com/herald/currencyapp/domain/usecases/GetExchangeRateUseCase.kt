@@ -7,23 +7,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 class GetExchangeRateUseCase @Inject constructor(
     private val retroRepo: RetroRepo
 ) {
-    operator fun invoke(
-        date: String = SimpleDateFormat(
-            "yyyy-MM-dd",
-            Locale.US
-        ).format(Calendar.getInstance().time), from: String, to: String
-    ): Flow<Resources<CurrencyExchange>> = flow {
+    operator fun invoke(from: String, to: String): Flow<Resources<CurrencyExchange>> = flow {
         try {
             emit(Resources.Loading())
-            val data = retroRepo.getExchangeRate(date = date, from = from, to = to)
+            val data = retroRepo.getExchangeRate(from = from, to = to)
             emit(Resources.Success(data))
         } catch (e: HttpException) {
             emit(Resources.Error(message = e.message.toString()))

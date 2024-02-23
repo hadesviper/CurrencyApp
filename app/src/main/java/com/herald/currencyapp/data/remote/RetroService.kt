@@ -7,7 +7,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface RetroService {
-    @GET("latest")
+    @GET("symbols")
     suspend fun getAllCurrencies(@Query("access_key") accessKey: String): AllCurrencies
 
     @GET("{date}")
