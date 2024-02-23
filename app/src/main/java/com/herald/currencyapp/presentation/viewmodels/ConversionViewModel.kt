@@ -26,8 +26,6 @@ class ConversionViewModel @Inject constructor(
     private val _stateExchange = MutableLiveData<StateCurrency>()
     val stateExchange: LiveData<StateCurrency> = _stateExchange
 
-    init {
-    }
 
     fun getCurrencyDetails(currency: String) {
         getCurrencyDetailsUseCase(currency).onEach {
@@ -37,7 +35,12 @@ class ConversionViewModel @Inject constructor(
                 }
 
                 is Resources.Success -> {
-                    _stateCurrencyDetails.value = StateCurrency(currencies = it.data!!)
+                    if (it.data!!.success){
+                        _stateCurrencyDetails.value = StateCurrency(currencies = it.data)
+                    }
+                    else {
+                        _stateCurrencyDetails.value = StateCurrency(error = it.data.error.info)
+                    }
                 }
 
                 is Resources.Error -> {
@@ -56,7 +59,14 @@ class ConversionViewModel @Inject constructor(
                 }
 
                 is Resources.Success -> {
-                    _stateExchange.value = StateCurrency(currencies = it.data!!)
+                    if (it.data!!.success){
+                        val ratesList = it.data.rates.values.toList()
+                        _stateExchange.value = StateCurrency(exchangeRate = if (ratesList.count() == 1) 1.0 else ratesList[1] / ratesList[0])
+                    }
+                    else {
+                        _stateExchange.value = StateCurrency(error = it.data.error.info)
+                    }
+
                 }
 
                 is Resources.Error -> {
@@ -70,6 +80,7 @@ class ConversionViewModel @Inject constructor(
     data class StateCurrency(
         val isLoading: Boolean = false,
         val currencies: CurrencyExchange? = null,
+        val exchangeRate: Double? = null,
         val error: String? = null
     )
 }

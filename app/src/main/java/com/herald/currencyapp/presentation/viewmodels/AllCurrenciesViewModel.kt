@@ -32,7 +32,12 @@ class AllCurrenciesViewModel @Inject constructor(
                 }
 
                 is Resources.Success -> {
-                    _state.value = StateAllCurrencies(currencies = it.data!!)
+                    if (it.data!!.success){
+                        _state.value = StateAllCurrencies(currencies = it.data)
+                    }
+                    else {
+                        _state.value = StateAllCurrencies(error = it.data.error.info)
+                    }
                 }
 
                 is Resources.Error -> {

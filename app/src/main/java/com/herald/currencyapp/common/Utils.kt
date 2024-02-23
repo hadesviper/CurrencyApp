@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import java.util.TimeZone
 import kotlin.system.exitProcess
 
 object Utils {
@@ -26,5 +30,15 @@ object Utils {
             .setMessage("Data is loading...")
             .setCancelable(false)
             .create()
+    }
+
+    fun getSpecificDate(backDays:Int = 0):String{
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        dateFormat.timeZone = TimeZone.getTimeZone("America/New_York")
+        return dateFormat.format(
+            Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_YEAR, -1*backDays)
+            }.time
+        )
     }
 }
