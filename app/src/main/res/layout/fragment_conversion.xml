@@ -79,6 +79,7 @@
                 android:autofillHints="from"
                 android:inputType="number"
                 android:minHeight="48dp"
+                android:text="1"
                 android:textAlignment="center"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
@@ -94,6 +95,7 @@
                 android:layout_weight="1"
                 android:autofillHints="from"
                 android:inputType="number"
+                android:text="1"
                 android:minHeight="48dp"
                 android:textAlignment="center"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck" />

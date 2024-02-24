@@ -79,6 +79,7 @@
                 android:autofillHints="from"
                 android:inputType="number"
                 android:minHeight="48dp"
+                android:text="1"
                 android:textAlignment="center"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck" />
 
@@ -95,6 +96,7 @@
                 android:autofillHints="from"
                 android:inputType="number"
                 android:minHeight="48dp"
+                android:text="1"
                 android:textAlignment="center"
                 tools:ignore="LabelFor,SpeakableTextPresentCheck" />
         </LinearLayout>

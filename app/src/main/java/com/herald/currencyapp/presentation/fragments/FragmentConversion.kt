@@ -65,9 +65,8 @@ class FragmentConversion : Fragment(R.layout.fragment_conversion) {
     }
 
     fun navigateToDetails() {
-        val action = FragmentConversionDirections.actionFragmentConversionToFragmentDetails(
-            binding.spinnerFrom.selectedItem.toString(),
-            binding.spinnerTo.selectedItem.toString()
+        val action = FragmentConversionDirections.actionFragmentConversionToFragmentDetails("",""
+
         )
         findNavController().navigate(action)
 
@@ -154,6 +153,7 @@ class FragmentConversion : Fragment(R.layout.fragment_conversion) {
             }
             it.exchangeRate?.run {
                 exchangeRate = this
+                binding.edtTextTo.setText(String.format("%.4f", (binding.edtTextFrom.text.toString().toDouble() * exchangeRate)))
             }
             it.error?.run {
                 Utils.showErrorDialog(requireContext(), this) {
@@ -165,5 +165,4 @@ class FragmentConversion : Fragment(R.layout.fragment_conversion) {
             }
         }
     }
-
 }
