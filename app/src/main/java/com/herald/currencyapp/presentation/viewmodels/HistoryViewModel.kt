@@ -30,7 +30,11 @@ class HistoryViewModel @Inject constructor(
                 }
 
                 is Resources.Success -> {
-                    _stateHistory.value = StateHistory(currencies = it.data!!)
+                    if (it.data!![2].success){
+                        _stateHistory.value = StateHistory(currencyHistory = mapCurrencyHistory(it.data))
+                    }
+                    else{
+                        _stateHistory.value = StateHistory(error = it.data[2].error.info)                    }
                 }
 
                 is Resources.Error -> {
@@ -39,12 +43,17 @@ class HistoryViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-
+    private fun mapCurrencyHistory(listData: List<CurrencyExchange>): Map<String, Double>{
+        val currencyHistory: Map<String, Double> = listData.associate {
+            val ratesList = it.rates.values.toList()
+            it.date to if (ratesList.count() == 1) 1.0 else ratesList[1] / ratesList[0]
+        }
+        return currencyHistory
+    }
 
     data class StateHistory(
         val isLoading: Boolean = false,
-        val currencies: List<CurrencyExchange>? = null,
+        val currencyHistory: Map<String, Double>? = null,
         val error: String? = null
     )
 

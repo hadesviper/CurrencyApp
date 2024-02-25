@@ -30,11 +30,13 @@ class BarChartView(context: Context) : View(context) {
     fun addBar(bar: Bar) {
         bars.add(bar)
         maxValue = maxOf(maxValue, bar.value.toFloat() )
+        invalidate()
     }
 
     fun addBars(bars: List<Bar>) {
         maxValue = bars.maxOf { it.value.toFloat() }
         this.bars.addAll(0, bars)
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {

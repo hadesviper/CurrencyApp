@@ -19,37 +19,36 @@ class ConversionViewModel @Inject constructor(
     private val getExchangeRateUseCase: GetExchangeRateUseCase
 ) : ViewModel() {
 
-    private val _stateCurrencyDetails = MutableLiveData<StateCurrency>()
-    val stateCurrencyDetails: LiveData<StateCurrency> = _stateCurrencyDetails
+    private val _statePopularCurrencies = MutableLiveData<StateCurrency>()
+    val statePopularCurrencies: LiveData<StateCurrency> = _statePopularCurrencies
 
 
     private val _stateExchange = MutableLiveData<StateCurrency>()
     val stateExchange: LiveData<StateCurrency> = _stateExchange
 
 
-    fun getCurrencyDetails(currency: String) {
-        getCurrencyDetailsUseCase(currency).onEach {
+    fun getPopularCurrencies(currency: String) {
+        getCurrencyDetailsUseCase(currency).onEach { it ->
             when (it) {
                 is Resources.Loading -> {
-                    _stateCurrencyDetails.value = StateCurrency(isLoading = true)
+                    _statePopularCurrencies.value = StateCurrency(isLoading = true)
                 }
 
                 is Resources.Success -> {
                     if (it.data!!.success){
-                        _stateCurrencyDetails.value = StateCurrency(currencies = it.data)
+                        _statePopularCurrencies.value = StateCurrency(topCurrenciesRates = mapTopCurrencies(it.data))
                     }
                     else {
-                        _stateCurrencyDetails.value = StateCurrency(error = it.data.error.info)
+                        _statePopularCurrencies.value = StateCurrency(error = it.data.error.info)
                     }
                 }
 
                 is Resources.Error -> {
-                    _stateCurrencyDetails.value = StateCurrency(error = it.message)
+                    _statePopularCurrencies.value = StateCurrency(error = it.message)
                 }
             }
         }.launchIn(viewModelScope)
     }
-
 
     fun getExchangeRate(from: String, to: String) {
         getExchangeRateUseCase(from, to).onEach {
@@ -57,18 +56,14 @@ class ConversionViewModel @Inject constructor(
                 is Resources.Loading -> {
                     _stateExchange.value = StateCurrency(isLoading = true)
                 }
-
                 is Resources.Success -> {
                     if (it.data!!.success){
-                        val ratesList = it.data.rates.values.toList()
-                        _stateExchange.value = StateCurrency(exchangeRate = if (ratesList.count() == 1) 1.0 else ratesList[1] / ratesList[0])
+                        _stateExchange.value = StateCurrency(exchangeRate = calculateExchangeRate(it.data))
                     }
                     else {
                         _stateExchange.value = StateCurrency(error = it.data.error.info)
                     }
-
                 }
-
                 is Resources.Error -> {
                     _stateExchange.value = StateCurrency(error = it.message)
                 }
@@ -76,10 +71,20 @@ class ConversionViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-
+    private fun mapTopCurrencies(exchange: CurrencyExchange):Map<String,Double>{
+        val topCurrenciesRates: Map<String, Double> =
+            exchange.rates.entries.toList().associate { entry->
+                entry.key to entry.value / exchange.rates.values.toList()[0]
+            }
+        return topCurrenciesRates
+    }
+    private fun calculateExchangeRate(exchange: CurrencyExchange): Double{
+        val ratesList = exchange.rates.values.toList()
+        return if (ratesList.count() == 1) 1.0 else ratesList[1] / ratesList[0]
+    }
     data class StateCurrency(
         val isLoading: Boolean = false,
-        val currencies: CurrencyExchange? = null,
+        val topCurrenciesRates: Map<String, Double>? = null,
         val exchangeRate: Double? = null,
         val error: String? = null
     )

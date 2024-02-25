@@ -60,13 +60,15 @@ class FragmentConversion : Fragment(R.layout.fragment_conversion) {
             spinnerFrom.setSelection(indexSp1)
             spinnerTo.setSelection(indexSp2)
             exchangeRate = 1 / exchangeRate
+            edtTextFrom.setText(String.format("%.4f", 1.0))
             edtTextTo.setText(String.format("%.4f", (edtTextFrom.text.toString().toDouble() * exchangeRate)))
         }
     }
 
     fun navigateToDetails() {
-        val action = FragmentConversionDirections.actionFragmentConversionToFragmentDetails("",""
-
+        val action = FragmentConversionDirections.actionFragmentConversionToFragmentDetails(
+            binding.spinnerFrom.selectedItem.toString(),
+            binding.spinnerTo.selectedItem.toString()
         )
         findNavController().navigate(action)
 
@@ -100,7 +102,7 @@ class FragmentConversion : Fragment(R.layout.fragment_conversion) {
                     if (it.isNullOrEmpty()) {
                         edtTextTo.setText("0")
                     } else {
-                        edtTextFrom.setText(String.format("%.4f", (it.toString().toDouble() * exchangeRate)))
+                        edtTextFrom.setText(String.format("%.4f", (it.toString().toDouble() / exchangeRate)))
                     }
                 }
             }
