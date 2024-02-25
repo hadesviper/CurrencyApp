@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.herald.currencyapp.common.Resources
 import com.herald.currencyapp.domain.models.CurrencyExchange
-import com.herald.currencyapp.domain.usecases.GetCurrencyDetailsUseCase
 import com.herald.currencyapp.domain.usecases.GetExchangeRateUseCase
+import com.herald.currencyapp.domain.usecases.GetPopularCurrenciesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ConversionViewModel @Inject constructor(
-    private val getCurrencyDetailsUseCase: GetCurrencyDetailsUseCase,
+    private val getPopularCurrenciesUseCase: GetPopularCurrenciesUseCase,
     private val getExchangeRateUseCase: GetExchangeRateUseCase
 ) : ViewModel() {
 
@@ -28,7 +28,7 @@ class ConversionViewModel @Inject constructor(
 
 
     fun getPopularCurrencies(currency: String) {
-        getCurrencyDetailsUseCase(currency).onEach { it ->
+        getPopularCurrenciesUseCase(currency).onEach { it ->
             when (it) {
                 is Resources.Loading -> {
                     _statePopularCurrencies.value = StateCurrency(isLoading = true)

@@ -1,5 +1,6 @@
 package com.herald.currencyapp.domain.usecases
 
+import com.herald.currencyapp.common.Constants
 import com.herald.currencyapp.common.Resources
 import com.herald.currencyapp.domain.models.CurrencyExchange
 import com.herald.currencyapp.domain.repository.RetroRepo
@@ -15,7 +16,7 @@ class GetExchangeRateUseCase @Inject constructor(
     operator fun invoke(from: String, to: String): Flow<Resources<CurrencyExchange>> = flow {
         try {
             emit(Resources.Loading())
-            val data = retroRepo.getExchangeRate(from = from, to = to)
+            val data = retroRepo.getExchangeRate(date = Constants.Latest_Date,from = from, to = to)
             emit(Resources.Success(data))
         } catch (e: HttpException) {
             emit(Resources.Error(message = e.message.toString()))

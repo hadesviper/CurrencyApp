@@ -10,13 +10,13 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class GetCurrencyDetailsUseCase @Inject constructor(
+class GetPopularCurrenciesUseCase @Inject constructor(
     private val retroRepo: RetroRepo
 ) {
     operator fun invoke(from: String): Flow<Resources<CurrencyExchange>> = flow {
         try {
             emit(Resources.Loading())
-            val data = retroRepo.getExchangeRate(from = from, to = Constants.Top_Currencies)
+            val data = retroRepo.getExchangeRate(date = Constants.Latest_Date, from = from, to = Constants.Top_Currencies)
             emit(Resources.Success(data))
         } catch (e: HttpException) {
             emit(Resources.Error(message = e.message.toString()))

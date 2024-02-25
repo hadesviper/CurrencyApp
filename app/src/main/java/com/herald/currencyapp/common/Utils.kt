@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.TimeZone
 import kotlin.system.exitProcess
 
 object Utils {
@@ -33,9 +32,7 @@ object Utils {
     }
 
     fun getSpecificDate(backDays:Int = 0):String{
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        dateFormat.timeZone = TimeZone.getTimeZone("America/New_York")
-        return dateFormat.format(
+        return SimpleDateFormat("yyyy-MM-dd", Locale.US).format(
             Calendar.getInstance().apply {
                 add(Calendar.DAY_OF_YEAR, -1*backDays)
             }.time
