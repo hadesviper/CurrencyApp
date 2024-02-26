@@ -28,7 +28,7 @@ class ConversionViewModel @Inject constructor(
 
 
     fun getPopularCurrencies(currency: String) {
-        getPopularCurrenciesUseCase(currency).onEach { it ->
+        getPopularCurrenciesUseCase(currency).onEach {
             when (it) {
                 is Resources.Loading -> {
                     _statePopularCurrencies.value = StateCurrency(isLoading = true)
@@ -52,12 +52,7 @@ class ConversionViewModel @Inject constructor(
                     _stateExchange.value = StateCurrency(isLoading = true)
                 }
                 is Resources.Success -> {
-                    if (it.data!!.success){
-                        _stateExchange.value = StateCurrency(exchangeRate = calculateExchangeRate(it.data))
-                    }
-                    else {
-                        _stateExchange.value = StateCurrency(error = it.data.error.info)
-                    }
+                    _stateExchange.value = StateCurrency(exchangeRate = calculateExchangeRate(it.data!!))
                 }
                 is Resources.Error -> {
                     _stateExchange.value = StateCurrency(error = it.message)
