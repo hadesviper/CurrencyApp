@@ -17,6 +17,7 @@ class GetHistoryUseCase @Inject constructor(
         from: String, to: String
     ): Flow<Resources<List<CurrencyExchange>>> = flow {
         try {
+            emit(Resources.Loading())
             val dates = listOf(
                 Utils.getSpecificDate(1),
                 Utils.getSpecificDate(2),
@@ -26,8 +27,10 @@ class GetHistoryUseCase @Inject constructor(
             val data = dates.map { date ->
                 retroRepo.getExchangeRate(date = date, from = from, to = to)
             }.toList()
-
-            emit(Resources.Success(data))
+            if (data.all { it.success })
+                emit(Resources.Success(data))
+            else
+                emit(Resources.Error(message = data.find { !it.success }!!.error.info))
         } catch (e: HttpException) {
             emit(Resources.Error(message = e.message.toString()))
         } catch (e: IOException) {

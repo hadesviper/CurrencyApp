@@ -30,11 +30,7 @@ class HistoryViewModel @Inject constructor(
                 }
 
                 is Resources.Success -> {
-                    if (it.data!![2].success){
-                        _stateHistory.value = StateHistory(currencyHistory = mapCurrencyHistory(it.data))
-                    }
-                    else{
-                        _stateHistory.value = StateHistory(error = it.data[2].error.info)                    }
+                    _stateHistory.value = StateHistory(currencyHistory = mapCurrencyHistory(it.data!!))
                 }
 
                 is Resources.Error -> {

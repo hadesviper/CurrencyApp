@@ -17,7 +17,10 @@ class GetAllCurrenciesUseCase @Inject constructor(
         try {
             emit(Resources.Loading())
             val data = retroRepo.getAllCurrencies()
-            emit(Resources.Success(data))
+            if (data.success)
+                emit(Resources.Success(data))
+            else
+                emit(Resources.Error(message = data.error.info))
         } catch (e: HttpException) {
             emit(Resources.Error(message = e.message.toString()))
         } catch (e: IOException) {

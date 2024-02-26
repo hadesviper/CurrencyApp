@@ -35,12 +35,7 @@ class ConversionViewModel @Inject constructor(
                 }
 
                 is Resources.Success -> {
-                    if (it.data!!.success){
-                        _statePopularCurrencies.value = StateCurrency(topCurrenciesRates = mapTopCurrencies(it.data))
-                    }
-                    else {
-                        _statePopularCurrencies.value = StateCurrency(error = it.data.error.info)
-                    }
+                    _statePopularCurrencies.value = StateCurrency(topCurrenciesRates = mapTopCurrencies(it.data!!))
                 }
 
                 is Resources.Error -> {
